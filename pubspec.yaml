@@ -1,0 +1,35 @@
+name: new_deeplinks
+description: Deep links, deferred deep linking and install attribution for Flutter apps, backed by your own self-hosted spbse server.
+version: 0.1.0
+homepage: https://spbse.online
+repository: https://github.com/Ellweb3/deeplinks-flutter
+issue_tracker: https://github.com/Ellweb3/deeplinks-flutter/issues
+topics:
+  - deep-linking
+  - deferred-deep-link
+  - attribution
+  - universal-links
+  - app-links
+
+environment:
+  sdk: ^3.10.0
+  flutter: '>=3.38.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.6.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: io.deeplinks.sdk
+        pluginClass: DeepLinksPlugin
+      ios:
+        pluginClass: DeepLinksPlugin

@@ -1,0 +1,22 @@
+name: new_deeplinks_example
+description: Demonstrates the new_deeplinks plugin with go_router.
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  new_deeplinks:
+    path: ../
+  go_router: ^18.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
