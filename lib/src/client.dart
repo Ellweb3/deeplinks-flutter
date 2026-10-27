@@ -78,6 +78,7 @@ class DeepLinksClient {
 
   bool _enabled = false;
   bool _sessionStarted = false;
+  bool _launchedWithLink = false;
   DeviceInfo? _device;
   Future<void>? _installFuture;
   DeepLink? _launchLink;
@@ -102,8 +103,9 @@ class DeepLinksClient {
     }
     final initial = options.captureLinks ? await _bridge.initialLink() : null;
     final initialUri = initial == null ? null : Uri.tryParse(initial);
+    _launchedWithLink = initialUri != null;
     if (_enabled) {
-      _startSession(hasLaunchLink: initialUri != null);
+      _startSession(hasLaunchLink: _launchedWithLink);
     }
     unawaited(_processInitialLink(initialUri));
   }
@@ -197,7 +199,7 @@ class DeepLinksClient {
           await _customReferrer() ??
           await _bridge.installReferrer().timeout(options.referrerTimeout, onTimeout: () => null);
       if (referrer != null && referrer.isNotEmpty) body['install_referrer'] = referrer;
-    } else if (device.platform == 'ios') {
+    } else if (device.platform == 'ios' && !_launchedWithLink) {
       final clipboard = await _bridge.clipboardLink(options.linkDomains);
       if (clipboard != null && clipboard.isNotEmpty) body['clipboard_url'] = clipboard;
     }

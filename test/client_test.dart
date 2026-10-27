@@ -217,6 +217,19 @@ void main() {
     expect(bridge.storage[StorageKeys.deferredDone], isNull);
   });
 
+  test('ios skips the clipboard when launched by a link', () async {
+    final bridge = FakeBridge(
+      clipboard: 'https://shop.lnk.example/t/token123',
+      initial: 'https://shop.lnk.example/promo',
+    );
+    final server = FakeServer();
+    await buildClient(bridge, server).start();
+    await settle();
+    expect(bridge.clipboardHosts, isNull);
+    final body = server.bodyOf(server.calls('/v1/install').single);
+    expect(body.containsKey('clipboard_url'), isFalse);
+  });
+
   test('android sends the install referrer', () async {
     final bridge = FakeBridge(platform: 'android', referrer: 'dl_t%3Dtok', clipboard: 'https://ignored');
     final server = FakeServer();

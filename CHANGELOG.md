@@ -1,3 +1,7 @@
+## 0.1.1
+
+- iOS: the clipboard is no longer read when the app is launched by a link, so the paste prompt does not appear on that launch.
+
 ## 0.1.0
 
 - First public release.
