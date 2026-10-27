@@ -254,7 +254,7 @@ A new user who installs through the invite gets `link.referralToken`. Send it to
 
 - **No advertising identifiers.** The SDK does not read IDFA or the Android Advertising ID and needs no App Tracking Transparency prompt.
 - **Device id.** On iOS a random id kept in the Keychain (`AfterFirstUnlockThisDeviceOnly`): it survives reinstalls but never leaves the device. On Android `SHA-256(app key + ANDROID_ID)`: stable across reinstalls and different for every app. The server uses it to tell a reinstall from a first install.
-- **Clipboard.** Read only until the first install is registered, only when iOS reports a probable URL, and only if the link is on one of your `linkDomains`. The SDK clears its own token from the clipboard after reading.
+- **Clipboard.** Read only until the first install is registered, only when iOS reports a probable URL, only if the link is on one of your `linkDomains`, and never on a launch by a link. The SDK clears its own token from the clipboard after reading.
 - **Consent.**
 
   ```dart
