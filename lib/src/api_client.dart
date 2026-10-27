@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-const sdkVersion = '0.1.1';
+const sdkVersion = '0.1.2';
 
 class ApiResponse {
   const ApiResponse(this.statusCode, this.body);

@@ -30,6 +30,7 @@ class ClientOptions {
     this.startDisabled = false,
     this.linkDomains = const [],
     this.captureLinks = true,
+    this.initialUri,
     this.installRetries = 3,
     this.referrerTimeout = const Duration(seconds: 2),
     this.initialLinkTimeout = const Duration(seconds: 6),
@@ -45,6 +46,7 @@ class ClientOptions {
   final bool startDisabled;
   final List<String> linkDomains;
   final bool captureLinks;
+  final Uri? initialUri;
   final int installRetries;
   final Duration referrerTimeout;
   final Duration initialLinkTimeout;
@@ -102,7 +104,7 @@ class DeepLinksClient {
       });
     }
     final initial = options.captureLinks ? await _bridge.initialLink() : null;
-    final initialUri = initial == null ? null : Uri.tryParse(initial);
+    final initialUri = initial == null ? options.initialUri : Uri.tryParse(initial);
     _launchedWithLink = initialUri != null;
     if (_enabled) {
       _startSession(hasLaunchLink: _launchedWithLink);

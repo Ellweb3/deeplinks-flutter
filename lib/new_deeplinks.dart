@@ -39,7 +39,9 @@ class DeepLinks {
   /// With [startDisabled] the SDK makes no network calls until [enable] is
   /// called; the choice persists across launches. Set [captureLinks] to
   /// `false` when another package (go_router, app_links) already receives
-  /// links, and pass them to [handleUri] instead.
+  /// links, and pass them to [handleUri] instead. In that case pass the link
+  /// that launched the app as [initialUri]: the SDK resolves it as the launch
+  /// link and, on iOS, does not read the clipboard on that launch.
   ///
   /// [installReferrer] supplies a referrer from a store other than Google
   /// Play, such as RuStore. It is tried first on Android, with a 5 second
@@ -52,6 +54,7 @@ class DeepLinks {
     bool startDisabled = false,
     List<String> linkDomains = const [],
     bool captureLinks = true,
+    Uri? initialUri,
     http.Client? httpClient,
     NativeBridge? bridge,
     InstallReferrerProvider? installReferrer,
@@ -69,6 +72,7 @@ class DeepLinks {
         startDisabled: startDisabled,
         linkDomains: linkDomains.map((d) => d.toLowerCase()).toList(),
         captureLinks: captureLinks,
+        initialUri: initialUri,
         installReferrer: installReferrer,
       ),
       bridge: bridge ?? MethodChannelBridge(),

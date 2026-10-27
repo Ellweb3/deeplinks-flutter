@@ -181,6 +181,7 @@ await DeepLinks.init(
 | `linkDomains` | `[]` | Short link hosts of the app. On iOS the clipboard is read only for these hosts. |
 | `startDisabled` | `false` | No network calls until `enable()`. See [Privacy](#privacy). |
 | `captureLinks` | `true` | Receive Universal Links and App Links natively. Turn off when another package handles links. |
+| `initialUri` | `null` | With `captureLinks: false`, the link that launched the app. |
 | `installReferrer` | `null` | Referrer from a store other than Google Play. |
 | `httpClient` | `null` | Custom `http.Client`, for proxies or tests. |
 | `bridge` | `null` | Custom `NativeBridge`, for tests. |
@@ -202,19 +203,24 @@ await DeepLinks.init(
 
 ### When another package handles links
 
-If the app already uses `go_router`, `app_links` or similar to receive links, keep it and pass each URI to the SDK:
+If the app already uses `go_router`, `app_links` or similar to receive links, keep it. Pass the link that launched the app to `init` and every later link to `handleUri`:
 
 ```dart
+final appLinks = AppLinks();
+final launch = await appLinks.getInitialLink();
+
 await DeepLinks.init(
   baseUrl: 'https://sdk.example.com',
   appKey: 'dl_pk_…',
+  linkDomains: ['go.example.com'],
   captureLinks: false,
+  initialUri: launch != null && launch.host == 'go.example.com' ? launch : null,
 );
 
-final link = await DeepLinks.handleUri(uri);
+appLinks.uriLinkStream.listen((uri) => DeepLinks.handleUri(uri));
 ```
 
-`handleUri` resolves the short link into its path and payload through the server and records the open for last-click attribution. The result is also emitted on `onLink`. Deferred links still arrive on `onLink` as usual.
+The launch link passed as `initialUri` arrives on `onLink` and from `getInitialLink` like a captured one, and on iOS the SDK skips the clipboard on that launch, so no paste prompt appears. `handleUri` resolves the short link into its path and payload through the server and records the open for last-click attribution. The result is also emitted on `onLink`. Deferred links still arrive on `onLink` as usual.
 
 ### Events and revenue
 

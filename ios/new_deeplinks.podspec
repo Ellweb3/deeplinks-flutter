@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'new_deeplinks'
-  s.version          = '0.1.1'
+  s.version          = '0.1.2'
   s.summary          = 'Deep linking and install attribution client for a self-hosted spbse server.'
   s.homepage         = 'https://github.com/Ellweb3/deeplinks-flutter'
   s.license          = { :file => '../LICENSE' }

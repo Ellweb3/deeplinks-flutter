@@ -1,6 +1,6 @@
 name: new_deeplinks
 description: Deep links, deferred deep linking and install attribution for Flutter apps, backed by your own self-hosted spbse server.
-version: 0.1.1
+version: 0.1.2
 homepage: https://spbse.online
 repository: https://github.com/Ellweb3/deeplinks-flutter
 issue_tracker: https://github.com/Ellweb3/deeplinks-flutter/issues

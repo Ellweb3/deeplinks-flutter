@@ -1,3 +1,7 @@
+## 0.1.2
+
+- `initialUri` in `init`: with `captureLinks: false` the app passes the link that launched it. The SDK resolves it as the launch link and, on iOS, skips the clipboard on that launch.
+
 ## 0.1.1
 
 - iOS: the clipboard is no longer read when the app is launched by a link, so the paste prompt does not appear on that launch.

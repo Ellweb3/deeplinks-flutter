@@ -133,6 +133,7 @@ DeepLinksClient buildClient(
   FakeServer server, {
   bool startDisabled = false,
   bool captureLinks = true,
+  Uri? initialUri,
   InstallReferrerProvider? installReferrer,
 }) {
   final base = Uri.parse('https://sdk.example.com/');
@@ -142,6 +143,7 @@ DeepLinksClient buildClient(
       appKey: 'dl_pk_test',
       startDisabled: startDisabled,
       captureLinks: captureLinks,
+      initialUri: initialUri,
       linkDomains: const ['shop.lnk.example'],
       eventFlushDelay: const Duration(milliseconds: 10),
       initialLinkTimeout: const Duration(seconds: 1),
@@ -228,6 +230,22 @@ void main() {
     expect(bridge.clipboardHosts, isNull);
     final body = server.bodyOf(server.calls('/v1/install').single);
     expect(body.containsKey('clipboard_url'), isFalse);
+  });
+
+  test('an initial uri passed by the app is the launch link and skips the clipboard', () async {
+    final bridge = FakeBridge(clipboard: 'https://shop.lnk.example/t/token123');
+    final server = FakeServer();
+    final client = buildClient(
+      bridge,
+      server,
+      captureLinks: false,
+      initialUri: Uri.parse('https://shop.lnk.example/promo'),
+    );
+    await client.start();
+    final initial = await client.getInitialLink();
+    expect(initial?.source, DeepLinkSource.launch);
+    expect(bridge.clipboardHosts, isNull);
+    expect(server.bodyOf(server.calls('/v1/install').single).containsKey('clipboard_url'), isFalse);
   });
 
   test('android sends the install referrer', () async {
